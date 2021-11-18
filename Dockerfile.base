@@ -7,7 +7,7 @@ RUN curl -sSLf --retry 10 --retry-delay 2 --retry-connrefused https://github.com
     | tar -xzC /opt; \
     ln -s /opt/sbt/bin/sbt /usr/local/bin/sbt;
 
-RUN mkdir -p /reproduction
+COPY dummy-project/ /reproduction/
 WORKDIR /reproduction
 
 RUN mkdir -p /root/.sbt/1.0

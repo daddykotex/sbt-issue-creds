@@ -44,6 +44,8 @@ root@6fdc41813aa7:/reproduction#
 
 At that point we have a private repo running. The steps above (to start the nexus container) only need to be done once (except if you stop/rm the container).
 
+*Note: the repository, by default, does not know where to find sbt-plugins. if you want to do that, you'll need to configure a proxy to `https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/` *
+
 ## To reproduce
 
 I've encoded the steps to reproduce inside docker files. The reason is that reproduction is easy when the setup is clean. When you try to reproduce on your machine, you pollute all sorts of directories with cache that may make the problem go away.
@@ -54,13 +56,13 @@ I've encoded the steps to reproduce inside docker files. The reason is that repr
 To reproduce build the two image:
 
 1. `docker build -t sbt-works -f Dockerfile.base . && docker build -t sbt-broken -f Dockerfile.broken .`
-2. confirm `sbt-works` is fine by running `docker run -it --link nexus:nexus sbt-works clean`
-2. confirm `sbt-broken` is **broken** by running `docker run -it --link nexus:nexus sbt-broken clean`
+2. confirm `sbt-works` is fine by running `docker run -it --link nexus:nexus sbt-works run`
+2. confirm `sbt-broken` is **broken** by running `docker run -it --link nexus:nexus sbt-broken run`
 
 For some reason, when the `plugins` folder exists, credentials are not used when resolving some artifacts for the build, and we get the following exceptions:
 
 ```
-david@FRANCOED1 ~/D/repo> docker run -it --link nexus:nexus sbt-broken clean
+david@FRANCOED1 ~/D/repo> docker run -it --link nexus:nexus sbt-broken run
 [info] [launcher] getting org.scala-sbt sbt 1.5.5  (this may take some time)...
 [info] [launcher] getting Scala 2.12.14 (for sbt)...
 [info] Updated file /reproduction/project/build.properties: set sbt.version to 1.5.5
