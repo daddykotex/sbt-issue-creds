@@ -1,0 +1,4 @@
+[repositories]
+	local
+	private-ivy-proxy-releases: http://nexus:8081/repository/maven-central/, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext], allowInsecureProtocol
+	private-maven-proxy-releases: http://nexus:8081/repository/maven-central/, allowInsecureProtocol

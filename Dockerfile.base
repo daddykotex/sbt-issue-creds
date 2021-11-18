@@ -1,0 +1,24 @@
+# build with `docker build -t sbt -f Dockerfile.base .`
+FROM eclipse-temurin:8u312-b07-jre
+
+ARG SBT_VER=1.5.5
+
+RUN curl -sSLf --retry 10 --retry-delay 2 --retry-connrefused https://github.com/sbt/sbt/releases/download/v${SBT_VER}/sbt-${SBT_VER}.tgz \
+    | tar -xzC /opt; \
+    ln -s /opt/sbt/bin/sbt /usr/local/bin/sbt;
+
+RUN mkdir -p /reproduction
+WORKDIR /reproduction
+
+RUN mkdir -p /root/.sbt/1.0
+
+COPY sbt/.credentials /root/.sbt/.credentials
+COPY sbt/repositories /root/.sbt/repositories
+COPY sbt/credentials.sbt /root/.sbt/1.0/credentials.sbt
+ENV SBT_OPTS="-Dsbt.override.build.repos=true -Dsbt.boot.credentials=/root/.sbt/.credentials"
+
+COPY sbt/.credentials-coursier /root/.sbt/.credentials-coursier
+ENV COURSIER_CREDENTIALS="/root/.sbt/.credentials-coursier"
+
+CMD []
+ENTRYPOINT ["sbt"]
