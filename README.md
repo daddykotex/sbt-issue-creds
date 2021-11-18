@@ -1,4 +1,4 @@
-# sbt issue
+# sbt issue - see https://github.com/sbt/sbt/issues/6718
 
 I have an issue with sbt under the following conditions:
 
