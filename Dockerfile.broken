@@ -1,4 +1,4 @@
 # build with `docker build -t sbt-broken -f Dockerfile.broken .`
-FROM sbt
+FROM sbt-works
 
 RUN mkdir -p /root/.sbt/1.0/plugins
